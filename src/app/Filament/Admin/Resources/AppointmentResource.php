@@ -31,8 +31,6 @@ class AppointmentResource extends Resource
                     ->numeric(),
                 Forms\Components\DatePicker::make('appointment_date')
                     ->required(),
-                Forms\Components\TextInput::make('appointment_time')
-                    ->required(),
                 Forms\Components\Textarea::make('complaint')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('status')
@@ -53,7 +51,6 @@ class AppointmentResource extends Resource
                 Tables\Columns\TextColumn::make('appointment_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('appointment_time'),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

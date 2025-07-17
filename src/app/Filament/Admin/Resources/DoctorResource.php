@@ -29,9 +29,6 @@ class DoctorResource extends Resource
                 Forms\Components\TextInput::make('specialist')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('no_str')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('practice_schedule')
                     ->maxLength(255)
                     ->default(null),
@@ -45,8 +42,6 @@ class DoctorResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('specialist')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('no_str')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('practice_schedule')
                     ->searchable(),
