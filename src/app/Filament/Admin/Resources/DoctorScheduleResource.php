@@ -2,9 +2,9 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\AppointmentResource\Pages;
-use App\Filament\Admin\Resources\AppointmentResource\RelationManagers;
-use App\Models\Appointment;
+use App\Filament\Admin\Resources\DoctorScheduleResource\Pages;
+use App\Filament\Admin\Resources\DoctorScheduleResource\RelationManagers;
+use App\Models\DoctorSchedule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AppointmentResource extends Resource
+class DoctorScheduleResource extends Resource
 {
-    protected static ?string $model = Appointment::class;
+    protected static ?string $model = DoctorSchedule::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,23 +23,15 @@ class AppointmentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('patient_id')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('doctor_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('room_id')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\DatePicker::make('appointment_date')
+                Forms\Components\TextInput::make('day_of_week')
                     ->required(),
-                Forms\Components\TextInput::make('appointment_time')
+                Forms\Components\TextInput::make('start_time')
                     ->required(),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\TextInput::make('end_time')
                     ->required(),
-                Forms\Components\Textarea::make('notes')
-                    ->columnSpanFull(),
             ]);
     }
 
@@ -47,20 +39,12 @@ class AppointmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('patient_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('doctor_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('room_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('appointment_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('appointment_time'),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('day_of_week'),
+                Tables\Columns\TextColumn::make('start_time'),
+                Tables\Columns\TextColumn::make('end_time'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -93,9 +77,9 @@ class AppointmentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAppointments::route('/'),
-            'create' => Pages\CreateAppointment::route('/create'),
-            'edit' => Pages\EditAppointment::route('/{record}/edit'),
+            'index' => Pages\ListDoctorSchedules::route('/'),
+            'create' => Pages\CreateDoctorSchedule::route('/create'),
+            'edit' => Pages\EditDoctorSchedule::route('/{record}/edit'),
         ];
     }
 }

@@ -4,8 +4,11 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\DoctorResource\Pages;
 use App\Filament\Admin\Resources\DoctorResource\RelationManagers;
+use App\Models\Department;
 use App\Models\Doctor;
+use App\Models\Room;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -26,13 +29,29 @@ class DoctorResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('specialist')
+                Forms\Components\TextInput::make('specialization')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('practice_schedule')
+                Forms\Components\TextInput::make('phone')
+                    ->tel()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->email()
                     ->maxLength(255)
                     ->default(null),
-            ]);
+                Forms\Components\Select::make('department_id')
+                    ->label('Department')
+                    ->options(Department::all()->pluck('name', 'id'))
+                    ->required()
+                    ->searchable(),
+
+                Forms\Components\Select::make('room_id')
+                    ->label('Room')
+                    ->options(Room::all()->pluck('room_number', 'id'))
+                    ->searchable()
+                    ->default(null),
+                    ]);
     }
 
     public static function table(Table $table): Table
@@ -41,9 +60,19 @@ class DoctorResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('specialist')
+                Tables\Columns\TextColumn::make('specialization')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('practice_schedule')
+                Tables\Columns\TextColumn::make('phone')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('department.name') // shows department name
+                    ->label('Department')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('room.room_number') // shows room number
+                    ->label('Room')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

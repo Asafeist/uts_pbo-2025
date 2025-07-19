@@ -2,9 +2,9 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\PatientResource\Pages;
-use App\Filament\Admin\Resources\PatientResource\RelationManagers;
-use App\Models\Patient;
+use App\Filament\Admin\Resources\RoomResource\Pages;
+use App\Filament\Admin\Resources\RoomResource\RelationManagers;
+use App\Models\Room;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PatientResource extends Resource
+class RoomResource extends Resource
 {
-    protected static ?string $model = Patient::class;
+    protected static ?string $model = Room::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,23 +23,13 @@ class PatientResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('room_number')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('gender')
-                    ->options([
-                        'Male' => 'Male',
-                        'Female' => 'Female',
-                    ])
-                    ->required(),
-                Forms\Components\DatePicker::make('date_of_birth')
-                    ->required(),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
+                Forms\Components\TextInput::make('floor')
+                    ->maxLength(255)
+                    ->default(null),
+                Forms\Components\TextInput::make('type')
                     ->maxLength(255)
                     ->default(null),
             ]);
@@ -49,19 +39,11 @@ class PatientResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('room_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('gender')
+                Tables\Columns\TextColumn::make('floor')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('date_of_birth')
-                    ->label('Age')
-                    ->getStateUsing(function ($record) {
-                        return \Carbon\Carbon::parse($record->date_of_birth)->age;
-                    })
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                Tables\Columns\TextColumn::make('type')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -95,9 +77,9 @@ class PatientResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPatients::route('/'),
-            'create' => Pages\CreatePatient::route('/create'),
-            'edit' => Pages\EditPatient::route('/{record}/edit'),
+            'index' => Pages\ListRooms::route('/'),
+            'create' => Pages\CreateRoom::route('/create'),
+            'edit' => Pages\EditRoom::route('/{record}/edit'),
         ];
     }
 }
